@@ -98,7 +98,7 @@ class Plugin extends BasePlugin
                 $libraryId = App::parseEnv($fs->libraryId);
                 $videoId = $asset->getFilename();
 
-                $event->url = "https://iframe.mediadelivery.net/play/$libraryId/$videoId";
+                $event->url = "https://iframe.mediadelivery.net/embed/$libraryId/$videoId";
             }
         });
 
