@@ -140,7 +140,7 @@ class BunnyStreamFs extends Fs
         }
     }
 
-    public function getFileMeta(string $uri): string
+    public function getFileMeta(string $uri): array
     {
         try {
             $response = $this->getClient()->request('GET', $uri);
