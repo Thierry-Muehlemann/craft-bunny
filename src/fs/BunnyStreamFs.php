@@ -140,6 +140,18 @@ class BunnyStreamFs extends Fs
         }
     }
 
+    public function getFileMeta(string $uri): string
+    {
+        try {
+            $response = $this->getClient()->request('GET', $uri);
+            $body = Json::decode($response->getBody()->getContents());
+            
+            return $body;
+        } catch (RequestException $e) {
+            throw new FsException($e->getMessage(), 0, $e);
+        }
+    }
+
     public function getDateModified(string $uri): int
     {
         try {
