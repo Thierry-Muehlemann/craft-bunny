@@ -116,6 +116,36 @@ class BunnyStreamFs extends Fs
         }
     }
 
+    /**
+     * Yields raw Bunny Stream video metadata
+     *
+     * @return \Generator<array>
+     */
+    public function getRemoteVideoData(): \Generator
+    {
+        try {
+            $page = 1;
+
+            do {
+                $response = $this->getClient()->request('GET', '', [
+                    'query' => [
+                        'page' => $page,
+                        'collection' => App::parseEnv($this->collectionId),
+                    ],
+                ]);
+                $body = Json::decode($response->getBody()->getContents());
+
+                foreach ($body['items'] as $videoData) {
+                    yield $videoData;
+                }
+
+                $page++;
+            } while (count($body['items']) === $body['itemsPerPage']);
+        } catch (RequestException $e) {
+            throw new FsException($e->getMessage(), 0, $e);
+        }
+    }
+
     public function getFileSize(string $uri): int
     {
         try {
